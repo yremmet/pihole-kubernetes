@@ -31,6 +31,12 @@ spec:
       targetPort: client-udp
       protocol: UDP
       name: client-udp
+  {{- if eq  .Values.serviceDhcp.sessionAffinity.type "ClientIP" }}
+  sessionAffinity: {{.Values.serviceDhcp.sessionAffinity.type}}
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{.Values.serviceDhcp.sessionAffinity.timeout}}
+  {{- end}}
   selector:
     app: {{ template "pihole.name" . }}
     release: {{ .Release.Name }}

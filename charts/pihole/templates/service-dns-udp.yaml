@@ -34,6 +34,13 @@ spec:
       {{- end }}
       protocol: UDP
       name: dns-udp
+
+  {{- if eq .Values.serviceDns.sessionAffinity.type "ClientIP" }}
+  sessionAffinity: {{.Values.serviceDns.sessionAffinity.type}}
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{.Values.serviceDns.sessionAffinity.timeout}}
+  {{- end}}
   selector:
     app: {{ template "pihole.name" . }}
     release: {{ .Release.Name }}
